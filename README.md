@@ -7,4 +7,4 @@
 Web project for 3rd course.
 [*Layout.*](https://wireframe.cc/pro/pp/506ba241d581629)
 
-![Homepage](layouts/Homepage.png)
+[![Homepage](layouts/Homepage.png)](https://wireframe.cc/pro/pp/506ba241d581629)
