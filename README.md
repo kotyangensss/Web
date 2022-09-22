@@ -1,4 +1,10 @@
 # Web
+
 Власов Роман М33021
+
 # Description
-[Layout](https://wireframe.cc/pro/pp/506ba241d581629)
+
+Web project for 3rd course.
+[*Layout.*](https://wireframe.cc/pro/pp/506ba241d581629)
+
+[![Homepage](layouts/Homepage.png)](https://wireframe.cc/pro/pp/506ba241d581629)
