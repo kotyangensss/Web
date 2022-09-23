@@ -72,7 +72,7 @@ html,
     padding: 0.5%;
     border-top: #bdc1c6 solid;
     border-left: #bdc1c6 solid;
-    background: #222526; /* Цвет фона */
+    background: #222526;
     font-family: cursive;
     text-transform: uppercase;
     text-decoration: underline;
@@ -100,7 +100,7 @@ html,
     margin: 0 auto;
     display: block;
     border: none;
-    filter: drop-shadow(0 0 0.75rem whitesmoke);
+    filter: drop-shadow(0 0 0.75rem #bdc1c6);
 }
 a {
     color: #bdc1c6;
