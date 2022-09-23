@@ -2,22 +2,35 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>aboba-music</title>
     <!--    <link rel="stylesheet" href="styles/outline-prototype-safe.css">-->
     <!--    <link rel="stylesheet" href="styles/outlines.css">-->
     <link rel="stylesheet" href="styles/custom.css">
 
 </head>
-<body>
-<header>ab<sup>o</sup>b<sub>a</sub></header>
-<main>
-    <p><q><em>Фарш</em> <i>не провернуть назад</i>, и мясо из котлет не восстановишь.</q><cite><Strong>
+<body class="body">
+<header class="header">
+    <div class="logo">ab<sup>o</sup>b<sub>a</sub></div>
+    <nav class="navigation">
+        <ul>
+            <li class="navigation_item"><a href>Чарт</a></li>
+            <li class="navigation_item"><a href>Последние Релизы</a></li>
+            <li class="navigation_item"><a href>Жанры</a></li>
+            <li class="navigation_item"><a href>Плейлисты</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main">
+    <p class="quote"><q><em>Фарш</em> <i>не провернуть назад</i>, и мясо из котлет не восстановишь.</q><cite><Strong>
         Pudge</Strong></cite></p>
-    <audio controls>
-        <source src="https://static.wikia.nocookie.net/dota2_ru_gamepedia/images/e/e1/Pud_rare_01_ru.mp3"
-                type="audio/mpeg">
-    </audio>
-    <div class="dv">
+    <div class="audio">
+        <audio controls>
+            <source src="https://static.wikia.nocookie.net/dota2_ru_gamepedia/images/e/e1/Pud_rare_01_ru.mp3"
+                    type="audio/mpeg">
+        </audio>
+    </div>
+    <div class="starege">
     <pre>
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⠟⠋⠉⠉⠉⠉⠉⠛⠻⠛⠉⠉⠛⠉⠻⢿⣿⣿⣿⣿⣿⣿
@@ -34,6 +47,8 @@
 ⣾⣿⣿⣿⣿⣿⣿⣷⣶⣶⣤⣤⣤⣤⣤⣤⣄⣠⣤⣤⣤⣤⣶⣾⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
     </pre>
+    </div>
+    <div class="bruh">
         <pre>
 ⡏⠉⠉⠉⠉⠉⠉⠋⠉⠉⠉⠉⠉⠉⠋⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠙⠉⠉⠉⠹
 ⡇⢸⣿⡟⠛⢿⣷⠀⢸⣿⡟⠛⢿⣷⡄⢸⣿⡇⠀⢸⣿⡇⢸⣿⡇⠀⢸⣿⡇⠀
@@ -57,16 +72,26 @@
 ⡝⡵⡕⡀⠑⠳⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⢉⡠⡲⡫⡪⡪⡣
     </pre>
     </div>
-    <nav>Чарт, Последние Релизы, Жанры</nav>
-    <section>
+    <section class="recommendations">
         <h1>Рекомендуемое</h1>
-        <ul>
-            <li><a href="https://youtu.be/jfBkqXE5qjQ">Трек</a></li>
+        <ul class="recommendations_list">
+            <img src="https://cdn.betterttv.net/emote/5f1b0186cf6d2144653d2970/3x" alt="catJam">
+            <li><a href="https://youtu.be/jfBkqXE5qjQ">Я календарь</a></li>
+            <img src="https://cdn.betterttv.net/emote/6274c7943c6f14b688471b3f/3x" alt="peepoSteer">
+            <li><a href="https://youtu.be/pX2LUvkiVeQ">Пхонк</a></li>
+            <img src="https://cdn.betterttv.net/emote/62a72e1f6ef7a5f0b7df0621/3x" alt="feelsRainMan">
+            <li><a href="https://youtu.be/suZUCgoyXMg">Судно</a></li>
         </ul>
     </section>
-    <aside>Играет сейчас</aside>
-    <p>Осторожно, код</p>
-    <pre><code>
+
+        <iframe class="youtube" width="768" height="432"
+                src="https://www.youtube.com/embed/yWAaTCt3QHA"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            <a href="https://youtu.be/8NdXENJJwWE" target="_blank">Играет сейчас...</a></iframe>
+
+        <a class="playing" href="https://youtu.be/8NdXENJJwWE" target="_blank">Играет сейчас...</a>
+    <pre class="code"><code>
          public override void Initialize(AnalysisContext context)
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -75,13 +100,13 @@
         }
     </code></pre>
 </main>
-<footer>
-    <ul>
-        <li>О проекте</li>
-        <li>Контакты</li>
-        <li><span class="spn">Вход</span></li>
+<footer class="footer">
+    <ul class="footer_list">
+        <li class="footer_list_item"><a href>О проекте</a></li>
+        <li class="footer_list_item"><a href>Контакты</a></li>
+        <li class="footer_list_item"><a href>Вход</a></li>
     </ul>
-    <article>
+    <article class="copyright">
         <del>Некая очень важная информация в самом низу сайта.</del>
     </article>
 </footer>
