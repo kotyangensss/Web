@@ -1,0 +1,34 @@
+.footer {
+    color: #bdc1c6;
+    background-color: #121212;
+    margin-top: 0;
+}
+
+.footer__list {
+    display: flex;
+    margin-left: 10%;
+    flex-direction: column;
+    list-style-type: none;
+}
+
+.footer__list_item {
+    line-height: 1.5;
+    font-size: 80%;
+}
+#page_load{
+    text-align: center;
+    font-size: 70%;
+}
+.copyright {
+    font-weight: 100;
+    text-align: center ;
+    font-size: 70%;
+    margin: 1%;
+    white-space: normal;
+}
+
+@media not screen  and (min-width: 720px){
+    .copyright{
+        margin-bottom: 50px;
+    }
+}
