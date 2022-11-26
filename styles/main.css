@@ -180,7 +180,7 @@ a {
     padding-top: 0;
 }
 
-#playlist__button {
+#playlist__button, #playlist__button__add{
     margin: 0 auto;
     display: block;
     height: 60px;
