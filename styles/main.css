@@ -60,7 +60,7 @@ a {
     color: #bdc1c6;
     text-decoration: none;
 }
-.recommendations__name, .featured_albums{
+.header__name, .featured_albums{
     font-size: 120%;
     text-align: center;
 }
@@ -178,4 +178,93 @@ a {
     font-size: 70%;
     margin-top: 0;
     padding-top: 0;
+}
+
+#playlist__button, #playlist__button__add{
+    margin: 0 auto;
+    display: block;
+    height: 60px;
+    width: 40%;
+}
+.button {
+    transition-duration: 0.4s;
+    color: #bdc1c6;
+    background-color: #121212;
+    font-size: 120%;
+    border-radius: 20px;
+    border-color: #121212;
+    border-style: solid;
+}
+
+.button:hover {
+    background-color: #1f2023;
+    border-color: #32a1ce;
+    cursor: pointer;
+}
+
+.button:disabled{
+    cursor: default;
+}
+
+.input {
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+}
+
+.input__field{
+    margin: auto 10px;
+    outline: none;
+    color: #bdc1c6;
+    border: none;
+    border-bottom: thin solid #bdc1c6;
+    font-size: 120%;
+    background: transparent;
+}
+
+.input__button{
+    width: 5%;
+    font-size: 120%;
+    height: 40px;
+}
+.playlist__name{
+    width: 74%;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+}
+
+.playlists__list{
+    padding: 0;
+    margin: 0 13%;
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    vertical-align: middle;
+}
+
+.playlists__list__item{
+    line-height: 60px;
+    border-bottom: #bdc1c6 thin solid;
+    text-align: center;
+    font-size: 120%;
+    font-style: italic;
+}
+
+.playlists__list__item:hover{
+    cursor: pointer;
+    background-color: #121212;
+}
+
+.track__list{
+    margin: 1% auto;
+    padding: 0;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    list-style: none;
+}
+.track__list__item{
+    margin: 1% 0;
+    text-align: center;
 }

@@ -11,10 +11,17 @@
           integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script src="scripts/load-header-footer.js"></script>
     <script src="scripts/navigation.js"></script>
+    <script src="scripts/add-playlist.js"></script>
+    <script src="scripts/add-tracks.js"></script>
+    <script src="scripts/load-playlists.js"></script>
 </head>
 <body class="body">
 <main class="main">
-
+    <br>
+    <button class="button" id="playlist__button">+ Создать плейлист</button>
+    <div class="header__name" id="playlist__list__name"><h1>Плейлисты</h1></div>
+    <script>loadPlaylists()</script>
 </main>
+<script>addPlaylist()</script>
 </body>
 </html>
