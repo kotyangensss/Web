@@ -24,7 +24,7 @@ function loadPlaylists() {
                 playlist_item.addEventListener('click', () => {
                     let el = document.getElementById("t" + playlist_item.id);
                     let elDisplay = getComputedStyle(el).display;
-                    if (elDisplay == "none") {
+                    if (elDisplay === "none") {
                         el.style.display = 'flex';
                     } else {
                         el.style.display = 'none';

@@ -41,13 +41,15 @@ html,
     position: fixed;
     bottom: 0;
     right: 0;
-    padding: 0.5%;
-    border-top: #bdc1c6 solid;
-    border-left: #bdc1c6 solid;
-    background: #222526;
-    font-family: cursive;
-    text-transform: uppercase;
-    text-decoration: underline;
+    width: 400px;
+    height: 70px;
+    background: #192029;
+    display: flex;
+}
+
+.playing  img{
+    height: 70px;
+    margin-right: 4%;
 }
 
 .youtube {

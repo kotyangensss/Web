@@ -197,7 +197,7 @@ module.exports = {
     * @property {array} 		config.songs										- Contains all of the songs the user has passed to Amplitude to use.
     * @property {object} 	config.playlists								- Contains all of the playlists the user created.
     * @property {object} 	config.start_song 							- The index of the song that AmplitudeJS should start with.
-    * @property {string} 	config.starting_playlist 				- The starting playlist the player will intiialize to.
+    * @property {string} 	config.starting_playlist 				- The starting playlist the amplitude will intiialize to.
     * @property {string} 	config.starting_playlist_song 	- The index of the song in the playlist that should be started.
     * @property {boolean} 	config.repeat 									- When repeat is on, when the song ends the song will replay itself.
     * @property {object} 	config.shuffle_list							- When shuffled, gets populated with the songs the user provided in a random order.
@@ -223,7 +223,7 @@ module.exports = {
     * @property {object}  	config.context 									- Web Audio API Context
     * @property {object}		config.source 									- Web Audio API Source
     * @property {object} 	config.analyser 								- Web Audio API Analyser
-    * @property {string}		config.player_state 						- The current state of the player.
+    * @property {string}		config.player_state 						- The current state of the amplitude.
     */
 
 /***/ }),
@@ -352,7 +352,7 @@ var Core = function () {
     _config2.default.audio.playbackRate = _config2.default.playback_speed;
 
     /*
-      Sets the state of the player.
+      Sets the state of the amplitude.
     */
     _configState2.default.setPlayerState();
   }
@@ -386,7 +386,7 @@ var Core = function () {
     }
 
     /*
-      Sets the state of the player.
+      Sets the state of the amplitude.
     */
     _configState2.default.setPlayerState();
   }
@@ -423,7 +423,7 @@ var Core = function () {
     }
 
     /*
-      Sets the state of the player.
+      Sets the state of the amplitude.
     */
     _configState2.default.setPlayerState();
 
@@ -1789,18 +1789,18 @@ var ConfigState = function () {
   }
 
   /**
-   * Sets the state of the player.
+   * Sets the state of the amplitude.
    */
   function setPlayerState() {
     /*
-      If paused and the current time is 0 the player is stopped.
+      If paused and the current time is 0 the amplitude is stopped.
     */
     if (_config2.default.audio.paused && _config2.default.audio.currentTime == 0) {
       _config2.default.player_state = "stopped";
     }
 
     /*
-      If paused and the current time is greater than 0 the player is
+      If paused and the current time is greater than 0 the amplitude is
       paused.
     */
     if (_config2.default.audio.paused && _config2.default.audio.currentTime > 0) {
@@ -2166,7 +2166,7 @@ var RepeatElements = function () {
    * Syncs repeat for all of the repeat buttons. Users
    * can apply styles to the 'amplitude-repeat-on' and
    * 'amplitude-repeat-off' classes. They represent the state
-   * of the player.
+   * of the amplitude.
    */
   function syncRepeat() {
     /*
@@ -2194,7 +2194,7 @@ var RepeatElements = function () {
   /**
    * Syncs repeat for all of the playlist repeat buttons. Users
    * can apply styles to the `amplitude-repeat-on` and `amplitude-repeat-off`
-   * classes. They repreent the state of the playlist in the player.
+   * classes. They repreent the state of the playlist in the amplitude.
    */
   function syncRepeatPlaylist(playlist) {
     /*
@@ -2214,7 +2214,7 @@ var RepeatElements = function () {
         /*
         If the state of the playlist is shuffled on, true, then
         we add the 'amplitude-repeat-on' class and remove the
-        'amplitude-repeat-off' class. If the player is not shuffled
+        'amplitude-repeat-off' class. If the amplitude is not shuffled
         then we do the opposite.
         */
         if (_config2.default.playlists[playlist].repeat) {
@@ -2232,7 +2232,7 @@ var RepeatElements = function () {
    * Syncs repeat for all of the repeat song buttons. Users
    * can apply styles to the 'amplitude-repeat-song-on' and
    * 'amplitude-repeat-song-off' classes. They represent the state
-   * of the player.
+   * of the amplitude.
    */
   function syncRepeatSong() {
     /*
@@ -2304,7 +2304,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var Callbacks = function () {
   /**
-   * Initializes the callbacks for the player.
+   * Initializes the callbacks for the amplitude.
    */
   function initialize() {
     /*
@@ -2546,10 +2546,10 @@ Object.defineProperty(exports, "__esModule", {
 var MuteElements = function () {
   /**
    * Syncs mute for all of the mute buttons. This represents the
-   * state of the player if it's muted or not.
+   * state of the amplitude if it's muted or not.
    *
    * @access public
-   * @param {string} state 	- The muted state of the player.
+   * @param {string} state 	- The muted state of the amplitude.
    */
   function setMuted(state) {
     /*
@@ -2558,7 +2558,7 @@ var MuteElements = function () {
     var muteClasses = document.getElementsByClassName("amplitude-mute");
 
     /*
-    Iterate over all of the mute classes. If the state of the player
+    Iterate over all of the mute classes. If the state of the amplitude
     is not-muted then we add the amplitude-not-muted classe and remove
     the amplitude muted class otherwise we do the opposite.
     */
@@ -4171,9 +4171,9 @@ var ShuffleElements = function () {
       */
       if (shuffleButtons[i].getAttribute("data-amplitude-playlist") == null) {
         /*
-        If the state of the player is shuffled on, true, then
+        If the state of the amplitude is shuffled on, true, then
         we add the 'amplitude-shuffle-on' class and remove the
-        'amplitude-shuffle-off' class. If the player is not shuffled
+        'amplitude-shuffle-off' class. If the amplitude is not shuffled
         then we do the opposite.
         */
         if (_config2.default.shuffle_on) {
@@ -4206,7 +4206,7 @@ var ShuffleElements = function () {
       /*
       If the state of the playlist is shuffled on, true, then
       we add the 'amplitude-shuffle-on' class and remove the
-      'amplitude-shuffle-off' class. If the player is not shuffled
+      'amplitude-shuffle-off' class. If the amplitude is not shuffled
       then we do the opposite.
       */
       if (_config2.default.playlists[playlist].shuffle) {
@@ -4773,7 +4773,7 @@ var Initializer = function () {
         if (userConfig.visualizations != undefined && userConfig.visualizations.length > 0) {
           /*
                   Iterate over all of the visualizations and
-                  register them in our player.
+                  register them in our amplitude.
                 */
           for (var i = 0; i < userConfig.visualizations.length; i++) {
             _visualizations2.default.register(userConfig.visualizations[i].object, userConfig.visualizations[i].params);
@@ -5005,12 +5005,12 @@ var Initializer = function () {
         */
         if (_typeof(userConfig.playlists[userConfig.starting_playlist].songs[parseInt(userConfig.starting_playlist_song)]) != undefined) {
           /*
-          Set the player to the song defined by the user.
+          Set the amplitude to the song defined by the user.
           */
           _audioNavigation2.default.changeSongPlaylist(_config2.default.active_playlist, userConfig.playlists[userConfig.starting_playlist].songs[parseInt(userConfig.starting_playlist_song)], parseInt(userConfig.starting_playlist_song));
         } else {
           /*
-          Set the player to the first song in the playlist
+          Set the amplitude to the first song in the playlist
           */
           _audioNavigation2.default.changeSongPlaylist(_config2.default.active_playlist, userConfig.playlists[userConfig.starting_playlist].songs[0], 0);
           /*
@@ -5020,7 +5020,7 @@ var Initializer = function () {
         }
       } else {
         /*
-        Set the player to the first song in the playlist
+        Set the amplitude to the first song in the playlist
         */
         _audioNavigation2.default.changeSong(_config2.default.active_playlist, userConfig.playlists[userConfig.starting_playlist].songs[0], 0);
       }
@@ -7105,7 +7105,7 @@ var KeyDown = function () {
    */
   function runNextKeyDownEvent() {
     /*
-      Check to see if the current state of the player
+      Check to see if the current state of the amplitude
       is in playlist mode or not playlist mode.
     */
     if (_config2.default.active_playlist == "" || _config2.default.active_playlist == null) {
@@ -7414,7 +7414,7 @@ var Next = function () {
    */
   function handleGlobalNext() {
     /*
-      Check to see if the current state of the player
+      Check to see if the current state of the amplitude
       is in playlist mode or not playlist mode. If we are in playlist mode,
       we set next on the playlist.
     */
@@ -7854,7 +7854,7 @@ var Play = function () {
 
     /*
       Syncs the play pause elements since they are dependent upon this state
-      of the player.
+      of the amplitude.
     */
     _playPauseElements2.default.sync();
   }
@@ -7910,7 +7910,7 @@ var Play = function () {
 
     /*
       Syncs the play pause elements since they are dependent upon this state
-      of the player.
+      of the amplitude.
     */
     _playPauseElements2.default.sync();
   }
@@ -8506,7 +8506,7 @@ var Prev = function () {
    */
   function handleGlobalPrev() {
     /*
-      Check to see if the current state of the player
+      Check to see if the current state of the amplitude
       is in playlist mode or not playlist mode. If we are in playlist mode,
       we set prev on the playlist.
     */
@@ -10372,7 +10372,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Gets the repeat state of the player.
+   * Gets the repeat state of the amplitude.
    *
    * Public Accessor: Amplitude.getRepeat()
    *
@@ -10394,7 +10394,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Returns the shuffle state of the player.
+   * Returns the shuffle state of the amplitude.
    *
    * Public Accessor: Amplitude.getShuffle()
    *
@@ -10417,7 +10417,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Sets the shuffle state for the player.
+   * Sets the shuffle state for the amplitude.
    *
    * Public Accessor: Amplitude.setShuffle()
    *
@@ -10448,7 +10448,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Sets the repeat state for the player.
+   * Sets the repeat state for the amplitude.
    *
    * Public Accessor: Amplitude.setRepeat()
    *
@@ -10497,7 +10497,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Gets the default album art for the player
+   * Gets the default album art for the amplitude
    *
    * Public Accessor: Amplitude.getDefaultAlbumArt()
    *
@@ -10519,7 +10519,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Sets the default album art for the player
+   * Sets the default album art for the amplitude
    *
    * Public Accessor: Amplitude.setDefaultAlbumArt( url )
    *
@@ -10531,7 +10531,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Sets the default playlist art for the player
+   * Sets the default playlist art for the amplitude
    *
    * Public Accessor: Amplitude.setDefaultPlaylistArt( url )
    *
@@ -11168,7 +11168,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Gets the active index of the player
+   * Gets the active index of the amplitude
    *
    * Public Accessor: Amplitude.getActiveIndex()
    *
@@ -11357,7 +11357,7 @@ var Amplitude = function () {
   }
 
   /**
-   * Returns the state of the player.
+   * Returns the state of the amplitude.
    *
    * Public Accessor: Amplitude.getPlayerState();
    */
@@ -13416,7 +13416,7 @@ module.exports = exports["default"];
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"amplitudejs","version":"5.3.2","description":"A JavaScript library that allows you to control the design of your media controls in your webpage -- not the browser. No dependencies (jQuery not required) https://521dimensions.com/open-source/amplitudejs","main":"dist/amplitude.js","devDependencies":{"babel-core":"^6.26.3","babel-loader":"^7.1.5","babel-plugin-add-module-exports":"0.2.1","babel-polyfill":"^6.26.0","babel-preset-es2015":"^6.18.0","husky":"^1.3.1","jest":"^23.6.0","prettier":"1.15.1","pretty-quick":"^1.11.1","watch":"^1.0.2","webpack":"^2.7.0"},"directories":{"doc":"docs"},"files":["dist"],"funding":{"type":"opencollective","url":"https://opencollective.com/amplitudejs"},"scripts":{"build":"node_modules/.bin/webpack","prettier":"npx pretty-quick","preversion":"npx pretty-quick && npm run test","postversion":"git push && git push --tags","test":"jest","version":"npm run build && git add -A dist"},"repository":{"type":"git","url":"git+https://github.com/521dimensions/amplitudejs.git"},"keywords":["webaudio","html5","javascript","audio-player"],"author":"521 Dimensions (https://521dimensions.com)","license":"MIT","bugs":{"url":"https://github.com/521dimensions/amplitudejs/issues"},"homepage":"https://github.com/521dimensions/amplitudejs#readme"}
+module.exports = {"name":"amplitudejs","version":"5.3.2","description":"A JavaScript library that allows you to control the design of your media controls in your webpage -- not the browser. No dependencies (jQuery not required) https://521dimensions.com/open-source/amplitudejs","main":"dist/amplitude.js","devDependencies":{"babel-core":"^6.26.3","babel-loader":"^7.1.5","babel-plugin-add-module-exports":"0.2.1","babel-polyfill":"^6.26.0","babel-preset-es2015":"^6.18.0","husky":"^1.3.1","jest":"^23.6.0","prettier":"1.15.1","pretty-quick":"^1.11.1","watch":"^1.0.2","webpack":"^2.7.0"},"directories":{"doc":"docs"},"files":["dist"],"funding":{"type":"opencollective","url":"https://opencollective.com/amplitudejs"},"scripts":{"build":"node_modules/.bin/webpack","prettier":"npx pretty-quick","preversion":"npx pretty-quick && npm run test","postversion":"git push && git push --tags","test":"jest","version":"npm run build && git add -A dist"},"repository":{"type":"git","url":"git+https://github.com/521dimensions/amplitudejs.git"},"keywords":["webaudio","html5","javascript","audio-amplitude"],"author":"521 Dimensions (https://521dimensions.com)","license":"MIT","bugs":{"url":"https://github.com/521dimensions/amplitudejs/issues"},"homepage":"https://github.com/521dimensions/amplitudejs#readme"}
 
 /***/ })
 /******/ ]);
