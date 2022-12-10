@@ -13,6 +13,7 @@ function loadPlaylists() {
                 playlists.appendChild(playlist_item);
                 let tracks = document.createElement("ul");
                 tracks.classList.add("track__list");
+                tracks.style.display = "none";
                 tracks.id = "t" + id.toString();
                 JSON.parse(playlist_data).playlist_tracks.forEach(track => {
                     let track_item = document.createElement("li");
@@ -24,7 +25,7 @@ function loadPlaylists() {
                 playlist_item.addEventListener('click', () => {
                     let el = document.getElementById("t" + playlist_item.id);
                     let elDisplay = getComputedStyle(el).display;
-                    if (elDisplay == "none") {
+                    if (elDisplay === "none") {
                         el.style.display = 'flex';
                     } else {
                         el.style.display = 'none';
