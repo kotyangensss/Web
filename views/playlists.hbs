@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>playlists</title>
+  {{>sharedHead}}
+  <script src="scripts/add-playlist.js"></script>
+  <script src="scripts/add-tracks.js"></script>
+  <script src="scripts/load-playlists.js"></script>
+</head>
+<body class="body">
+{{>header IsAuthorized = message}}
+<main class="main">
+  <br>
+  <button class="button" id="playlist__button">+ Создать плейлист</button>
+  <div class="header__name" id="playlist__list__name"><h1>Плейлисты</h1></div>
+  <script>loadPlaylists()</script>
+</main>
+<script>addPlaylist()</script>
+{{>footer}}
+</body>
+<script type="text/javascript" src="amplitude/js/player.js"></script>
+</html>

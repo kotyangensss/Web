@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>chart</title>
+  {{>sharedHead}}
+  <script src="scripts/chart.js"></script>
+</head>
+<body class="body">
+<main class="main">
+  {{>header IsAuthorized = message}}
+  <img class="loading"
+       src="https://cdn.betterttv.net/emote/63608735ed98a03da0ce6613/3x"
+       alt="loading">
+  {{>footer}}
+</main>
+<script>chart()</script>
+</body>
+<script type="text/javascript" src="amplitude/js/player.js"></script>
+</html>
