@@ -21,7 +21,7 @@ export class ResponseTimeInterceptor<T>
     const now = Date.now();
     return next.handle().pipe(
       map((data) => {
-        return { ...data, time: (Date.now() - now) / 1000 };
+        return { ...data, time: ((Date.now() - now) / 1000).toString() };
       }),
     );
   }
