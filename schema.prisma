@@ -1,0 +1,90 @@
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model user {
+  userId Int @default(autoincrement()) @id
+  link String
+  email String @unique
+  name String
+  user_type String
+  bio String
+  created DateTime @default(now())
+  profilePic String
+  tracks track[]
+  playlists playlist[]
+  history history[]
+}
+
+model track {
+  trackId Int @default(autoincrement()) @id
+  trackName String
+  authorId Int
+  author user @relation(fields: [authorId], references: [userId])
+  featIds Int[]
+  featNames String[]
+  cover String
+  source String
+  created DateTime @default(now())
+  length Int
+  genre String
+  lyrics String
+  history history[]
+  trackToPlaylist trackToPlaylist[]
+  statistics statistics[]
+}
+
+model playlist {
+  playlistId Int @default(autoincrement()) @id
+  plyalistName String
+  playlistType String
+  created DateTime @default(now())
+  authorId Int
+  author user @relation(fields: [authorId], references: [userId])
+  cover String
+  history history[]
+  chart charts?
+  trackToPlaylist trackToPlaylist[]
+  statistics statistics[]
+}
+
+model trackToPlaylist {
+  id Int @id
+  playlistId Int
+  playlist playlist @relation(fields: [playlistId], references: [playlistId])
+  trackId Int
+  track track @relation(fields: [trackId], references: [trackId])
+}
+
+model charts {
+  playlistId Int @id
+  playlist playlist @relation(fields: [playlistId], references: [playlistId])
+  genre String
+  period String
+}
+
+model statistics {
+  id Int @id @default(autoincrement())
+  playlistId Int
+  playlist playlist @relation(fields: [playlistId], references: [playlistId])
+  trackId Int
+  track track @relation(fields: [trackId], references: [trackId])
+  num BigInt
+  lastMonthNum Int
+}
+
+model history {
+  id Int @id @default(autoincrement())
+  userId Int
+  author user @relation(fields: [userId], references: [userId])
+  trackId Int
+  track track @relation(fields: [trackId], references: [trackId])
+  playlistId Int
+  playlist playlist @relation(fields: [playlistId], references: [playlistId])
+  date DateTime @default(now())
+}
