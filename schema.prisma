@@ -19,6 +19,7 @@ model user {
   tracks track[]
   playlists playlist[]
   history history[]
+  creds creds[]
 }
 
 model track {
@@ -87,4 +88,11 @@ model history {
   playlistId Int
   playlist playlist @relation(fields: [playlistId], references: [playlistId])
   date DateTime @default(now())
+}
+
+model creds {
+  userId Int @id
+  user user @relation(fields: [userId], references: [userId])
+  login String @unique
+  password String /// @encrypted
 }
