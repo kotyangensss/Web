@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -8,91 +8,91 @@ generator client {
 }
 
 model user {
-  userId Int @default(autoincrement()) @id
-  link String
-  email String @unique
-  name String
-  user_type String
-  bio String
-  created DateTime @default(now())
+  userId     Int        @id @default(autoincrement())
+  email      String     @unique
+  name       String
+  user_type  String
+  bio        String
+  created    DateTime   @default(now())
   profilePic String
-  tracks track[]
-  playlists playlist[]
-  history history[]
-  creds creds[]
+  tracks     track[]
+  playlists  playlist[]
+  history    history[]
+  creds      creds[]
 }
 
 model track {
-  trackId Int @default(autoincrement()) @id
-  trackName String
-  authorId Int
-  author user @relation(fields: [authorId], references: [userId])
-  featIds Int[]
-  featNames String[]
-  cover String
-  source String
-  created DateTime @default(now())
-  length Int
-  genre String
-  lyrics String
-  history history[]
+  trackId         Int               @id @default(autoincrement())
+  trackName       String
+  authorId        Int
+  author          user              @relation(fields: [authorId], references: [userId])
+  featIds         Int[]
+  featNames       String[]
+  cover           String
+  source          String
+  created         DateTime          @default(now())
+  length          Int
+  genres          String[]
+  lyrics          String
+  history         history[]
   trackToPlaylist trackToPlaylist[]
-  statistics statistics[]
+  statistics      statistics[]
 }
 
 model playlist {
-  playlistId Int @default(autoincrement()) @id
-  plyalistName String
-  playlistType String
-  created DateTime @default(now())
-  authorId Int
-  author user @relation(fields: [authorId], references: [userId])
-  cover String
-  history history[]
-  chart charts?
+  playlistId      Int               @id @default(autoincrement())
+  playlistName    String
+  playlistType    String
+  created         DateTime          @default(now())
+  authorId        Int
+  author          user              @relation(fields: [authorId], references: [userId])
+  cover           String
+  history         history[]
+  chart           charts?
   trackToPlaylist trackToPlaylist[]
-  statistics statistics[]
+  statistics      statistics[]
 }
 
 model trackToPlaylist {
-  id Int @id
+  id         Int      @id
   playlistId Int
-  playlist playlist @relation(fields: [playlistId], references: [playlistId])
-  trackId Int
-  track track @relation(fields: [trackId], references: [trackId])
+  playlist   playlist @relation(fields: [playlistId], references: [playlistId])
+  trackId    Int
+  track      track    @relation(fields: [trackId], references: [trackId])
+  index      Int
 }
 
 model charts {
-  playlistId Int @id
-  playlist playlist @relation(fields: [playlistId], references: [playlistId])
-  genre String
-  period String
+  playlistId Int      @id
+  playlist   playlist @relation(fields: [playlistId], references: [playlistId])
+  genre      String
+  period     String
 }
 
 model statistics {
-  id Int @id @default(autoincrement())
-  playlistId Int
-  playlist playlist @relation(fields: [playlistId], references: [playlistId])
-  trackId Int
-  track track @relation(fields: [trackId], references: [trackId])
-  num BigInt
+  id           Int      @id @default(autoincrement())
+  playlistId   Int
+  playlist     playlist @relation(fields: [playlistId], references: [playlistId])
+  trackId      Int
+  track        track    @relation(fields: [trackId], references: [trackId])
+  num          BigInt
   lastMonthNum Int
 }
 
 model history {
-  id Int @id @default(autoincrement())
-  userId Int
-  author user @relation(fields: [userId], references: [userId])
-  trackId Int
-  track track @relation(fields: [trackId], references: [trackId])
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  author     user     @relation(fields: [userId], references: [userId])
+  trackId    Int
+  track      track    @relation(fields: [trackId], references: [trackId])
   playlistId Int
-  playlist playlist @relation(fields: [playlistId], references: [playlistId])
-  date DateTime @default(now())
+  playlist   playlist @relation(fields: [playlistId], references: [playlistId])
+  date       DateTime @default(now())
 }
 
 model creds {
-  userId Int @id
-  user user @relation(fields: [userId], references: [userId])
-  login String @unique
+  userId   Int    @id
+  user     user   @relation(fields: [userId], references: [userId])
+  login    String @unique
   password String /// @encrypted
 }
