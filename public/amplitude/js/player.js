@@ -2,8 +2,8 @@ let songs = [
   {
     name: "I'm so lazy",
     artist: 'billboards',
-    url: "songs/billboards - I'm so lazy.mp3",
-    cover_art_url: "song-art/billboards - I'm so lazy.png",
+    url: 'https://dl.dropbox.com/s/efdimngyhmobm7y/billboards%20-%20I%27m%20so%20lazy.mp3',
+    cover_art_url: 'https://dl.dropbox.com/s/e9l2vnj27nps9jd/billboards%20-%20I%27m%20so%20lazy.png',
     duration: '02:32',
   },
   {

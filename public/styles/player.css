@@ -275,6 +275,7 @@ div.player__header {
     padding: 20px 15px;
     text-align: center;
     position: relative;
+    height: 81px;
 }
 
 .player__middle .time__container {
@@ -386,6 +387,7 @@ div.player__header {
 
 .player__bottom .volume__container input[type="range"].amplitude-volume-slider {
     width: calc(100% - 30px);
+    height: 4px;
     -webkit-appearance: none;
     display: block;
     margin-left: 10px;
@@ -446,12 +448,12 @@ div.player__header {
 
 .player__bottom .volume__container input[type="range"].amplitude-volume-slider::-ms-fill-lower {
     background: transparent;
-    border-radius: 2.6px;
+    border-radius: 2px;
 }
 
 .player__bottom .volume__container input[type="range"].amplitude-volume-slider::-ms-fill-upper {
     background: transparent;
-    border-radius: 2.6px;
+    border-radius: 2px;
 }
 
 .player__bottom .volume__container input[type="range"].amplitude-volume-slider::-ms-thumb {
