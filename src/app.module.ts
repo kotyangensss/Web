@@ -6,6 +6,7 @@ import { TrackModule } from './track/track.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { HistoryModule } from './history/history.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { StatisticsModule } from './statistics/statistics.module';
     PlaylistModule,
     HistoryModule,
     StatisticsModule,
+    AuthorizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
