@@ -7,6 +7,8 @@ import { PlaylistModule } from './playlist/playlist.module';
 import { HistoryModule } from './history/history.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { PrismaService } from './prisma.service';
+import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { AuthorizationModule } from './authorization/authorization.module';
     HistoryModule,
     StatisticsModule,
     AuthorizationModule,
+    NestjsFormDataModule.config({ storage: MemoryStoredFile }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

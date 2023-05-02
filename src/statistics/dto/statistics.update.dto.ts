@@ -5,18 +5,18 @@ export class StatisticsUpdateDto {
   private readonly num: number;
 
   @ApiProperty()
-  private readonly lastMonthNum: number;
+  private readonly month: number;
 
-  constructor(num: number, lastMonthNum: number) {
+  constructor(num: number, month: number) {
     this.num = num;
-    this.lastMonthNum = lastMonthNum;
+    this.month = month;
   }
 
   get getNum(): number {
     return this.num;
   }
 
-  get getLastMonthNum(): number {
-    return this.lastMonthNum;
+  get getMonth(): number {
+    return this.month;
   }
 }

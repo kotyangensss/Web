@@ -10,15 +10,18 @@ import {
   Controller,
   Delete,
   Get,
-  NotImplementedException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { TrackInfoDto } from './dto/track.info.dto';
 import { TrackCreateDto } from './dto/track.create.dto';
 import { TrackUpdateDto } from './dto/track.update.dto';
+import { form } from '../main';
 
 @ApiBearerAuth()
 @ApiTags('track')
@@ -37,12 +40,16 @@ export class TrackController {
     description: 'Трек найден',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
   @Get(':id')
-  async getTrack(@Param('id') id: number): Promise<TrackInfoDto> {
-    throw new NotImplementedException();
+  async getTrack(@Param('id', ParseIntPipe) id: number): Promise<TrackInfoDto> {
+    return await this.trackService.getTrack(id);
   }
 
   @ApiOperation({
@@ -52,9 +59,13 @@ export class TrackController {
     status: 200,
     description: 'Треки найдены',
   })
-  @Get(':name')
-  async getTracks(@Param('name') name: string): Promise<TrackInfoDto[]> {
-    throw new NotImplementedException();
+  @Get('/search/:name')
+  async getTracks(
+    @Param('name') name: string,
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+  ): Promise<TrackInfoDto[]> {
+    return await this.trackService.getTracksByName(name, limit, offset);
   }
 
   @ApiOperation({
@@ -64,10 +75,23 @@ export class TrackController {
     status: 200,
     description: 'Трек создан',
   })
-  @Post('')
+  @ApiResponse({
+    status: 400,
+    description: 'Неправильный ввод',
+  })
+  @Post('/upload')
   @ApiConsumes('multipart/form-data')
-  async createTrack(@Body() track: TrackCreateDto): Promise<TrackInfoDto> {
-    throw new NotImplementedException();
+  async createTrack(
+    @Req() req,
+    @Body() track: TrackCreateDto,
+  ): Promise<TrackInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
+
+    return this.trackService.createTrack(formFields[0], formFields[1]);
   }
 
   @ApiOperation({
@@ -78,15 +102,27 @@ export class TrackController {
     description: 'Трек обновлен',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
-  @Put(':id')
+  @Put('/update/:id')
+  @ApiConsumes('multipart/form-data')
   async updateTrack(
-    @Param('id') id: number,
+    @Req() req,
+    @Param('id', ParseIntPipe) id: number,
     @Body() track?: TrackUpdateDto,
-  ): Promise<number> {
-    throw new NotImplementedException();
+  ): Promise<TrackInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
+
+    return this.trackService.updateTrack(id, formFields[0], formFields[1]);
   }
 
   @ApiOperation({
@@ -97,11 +133,17 @@ export class TrackController {
     description: 'Трек удален',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
-  @Delete(':id')
-  async deleteTrack(@Param('id') id: number): Promise<number> {
-    throw new NotImplementedException();
+  @Delete('/delete/:id')
+  async deleteTrack(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<TrackInfoDto> {
+    return this.trackService.deleteTrack(id);
   }
 }

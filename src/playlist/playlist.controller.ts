@@ -193,7 +193,7 @@ export class PlaylistController {
   }
 
   @ApiOperation({
-    summary: 'Добвить трек в плейлиста',
+    summary: 'Добвить трек в плейлист',
   })
   @ApiResponse({
     status: 200,
@@ -211,3 +211,6 @@ export class PlaylistController {
     throw new NotImplementedException();
   }
 }
+
+//TODO: сделать formdata унифицированной, добавить всякие 403 400 ошибки, явно указывать тип во всех массивах,
+// можно еще индексы навесить и в статистике хранить просто месяц а не ластмесяц

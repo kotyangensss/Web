@@ -8,11 +8,16 @@ import { fieldEncryptionMiddleware } from 'prisma-field-encryption';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export const client = new PrismaClient();
+export const formidable = require('formidable');
+export const form = formidable({ multiples: true, uploadDir: __dirname });
 
 // This is a function, don't forget to call it:
 client.$use(fieldEncryptionMiddleware());
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bodyParser: true,
+  });
+
   const hbs = await require('hbs');
 
   const config = new DocumentBuilder()
