@@ -1,6 +1,6 @@
 import { TrackInfoDto } from './dto/track.info.dto';
-import { TrackDao } from './dao/track.dao';
-import { TrackTransformer } from './transformers/track.transformer';
+import { TrackDao } from './track.dao';
+import { TrackTransformer } from './track.transformer';
 import {
   BadRequestException,
   Injectable,
@@ -93,8 +93,8 @@ export class TrackService {
       length = await getAudioDurationInSeconds(files.source.filepath).then();
     }
 
-    if (fields.names == '') {
-      fields.names = undefined;
+    if (fields.name == '') {
+      fields.name = undefined;
     }
     if (fields.genres == '') {
       fields.genres = undefined;

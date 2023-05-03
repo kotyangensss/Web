@@ -10,7 +10,7 @@ export class PlaylistInfoDto {
   private readonly name: string;
 
   @ApiProperty({ enum: PlaylistType })
-  private readonly type: PlaylistType;
+  private readonly type: string;
 
   @ApiProperty()
   private readonly created: string;
@@ -27,7 +27,7 @@ export class PlaylistInfoDto {
   constructor(
     id: number,
     name: string,
-    type: PlaylistType,
+    type: string,
     created: string,
     authorId: number,
     cover: string,
@@ -50,7 +50,7 @@ export class PlaylistInfoDto {
     return this.name;
   }
 
-  get getType(): PlaylistType {
+  get getType(): string {
     return this.type;
   }
 

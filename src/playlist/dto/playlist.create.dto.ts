@@ -1,32 +1,42 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TrackInfoDto } from '../../track/dto/track.info.dto';
 import { PlaylistType } from '../playlist.type';
 
-export class PlaylistCreateSingleDto {
+export class PlaylistCreateDto {
   @ApiProperty()
   private readonly name: string;
 
   @ApiProperty()
+  private readonly authorId: number;
+
+  @ApiProperty({ format: 'binary', required: false })
   private readonly cover: string;
+
+  @ApiProperty({ enum: PlaylistType })
   private readonly type: PlaylistType;
 
   @ApiProperty()
-  private readonly tracks: TrackInfoDto;
+  private readonly trackIds: number[];
 
   constructor(
     name: string,
+    authorId: number,
     cover: string,
-    type: PlaylistType.SINGLE,
-    tracks: TrackInfoDto,
+    type: PlaylistType,
+    trackIds: number[],
   ) {
     this.name = name;
+    this.authorId = authorId;
     this.cover = cover;
     this.type = type;
-    this.tracks = tracks;
+    this.trackIds = trackIds;
   }
 
   get getName(): string {
     return this.name;
+  }
+
+  get getAuthorId(): number {
+    return this.authorId;
   }
 
   get getCover(): string {
@@ -37,7 +47,7 @@ export class PlaylistCreateSingleDto {
     return this.type;
   }
 
-  get getTracks(): TrackInfoDto {
-    return this.tracks;
+  get getTrackIds(): number[] {
+    return this.trackIds;
   }
 }

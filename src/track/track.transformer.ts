@@ -1,6 +1,6 @@
-import { TrackInfoDto } from '../dto/track.info.dto';
+import { TrackInfoDto } from './dto/track.info.dto';
 import { track } from '@prisma/client';
-import { TrackCreateDto } from '../dto/track.create.dto';
+import { TrackCreateDto } from './dto/track.create.dto';
 
 export class TrackTransformer {
   static trackToTrackInfoDto(track: track): TrackInfoDto {
@@ -12,7 +12,7 @@ export class TrackTransformer {
       track.featNames,
       track.cover,
       track.source,
-      track.created.getDate().toString(),
+      track.created.toString(),
       track.length,
       track.genres,
       track.lyrics,
