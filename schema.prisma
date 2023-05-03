@@ -70,13 +70,13 @@ model charts {
 }
 
 model statistics {
-  id         Int      @id @default(autoincrement())
-  playlistId Int
-  playlist   playlist @relation(fields: [playlistId], references: [playlistId])
-  trackId    Int
-  track      track    @relation(fields: [trackId], references: [trackId])
-  num        BigInt
-  month      BigInt
+  id         Int       @id @default(autoincrement())
+  playlistId Int?
+  playlist   playlist? @relation(fields: [playlistId], references: [playlistId])
+  trackId    Int?
+  track      track?    @relation(fields: [trackId], references: [trackId])
+  num        Int
+  month      Int
 }
 
 model history {

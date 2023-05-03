@@ -8,5 +8,6 @@ import { PrismaService } from '../prisma.service';
   imports: [],
   controllers: [TrackController],
   providers: [TrackService, TrackDao, PrismaService],
+  exports: [TrackService],
 })
 export class TrackModule {}
