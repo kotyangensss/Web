@@ -6,13 +6,11 @@ import {
 } from '@nestjs/common';
 import { TrackInfoDto } from '../track/dto/track.info.dto';
 import { TrackTransformer } from '../track/track.transformer';
-import { TrackDao } from '../track/track.dao';
 import { PlaylistDao } from './playlist.dao';
 import { PlaylistInfoDto } from './dto/playlist.info.dto';
 import { PlaylistTransformer } from './playlist.transformer';
-import { Genre } from '../track/genre';
+import { Genre } from '../enums/genre';
 import { dropbox } from '../dropbox';
-import { UserTransformer } from '../user/user.transformer';
 
 @Injectable()
 export class PlaylistService {

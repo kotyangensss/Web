@@ -6,6 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -15,6 +16,7 @@ import {
   Post,
   Put,
   Query,
+  Render,
   Req,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
@@ -22,7 +24,7 @@ import { TrackInfoDto } from './dto/track.info.dto';
 import { TrackCreateDto } from './dto/track.create.dto';
 import { TrackUpdateDto } from './dto/track.update.dto';
 import { form } from '../main';
-
+import { Genre } from '../enums/genre';
 @ApiBearerAuth()
 @ApiTags('track')
 @Controller('track')
@@ -30,6 +32,21 @@ export class TrackController {
   private readonly trackService: TrackService;
   constructor(trackService: TrackService) {
     this.trackService = trackService;
+  }
+
+  @ApiOperation({
+    summary: 'Получить последние релизы',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Треки найдены',
+  })
+  @Get('releases')
+  async getLatestTracks(
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+  ): Promise<TrackInfoDto[]> {
+    return await this.trackService.getLatestTracks(limit, offset);
   }
 
   @ApiOperation({
@@ -48,8 +65,9 @@ export class TrackController {
     description: 'Трек не найден',
   })
   @Get(':id')
-  async getTrack(@Param('id', ParseIntPipe) id: number): Promise<TrackInfoDto> {
-    return await this.trackService.getTrack(id);
+  @Render('track')
+  async getTrack(@Param('id', ParseIntPipe) id: number) {
+    return await this.trackService.getTrack(id).then();
   }
 
   @ApiOperation({
@@ -66,6 +84,29 @@ export class TrackController {
     @Query('offset') offset = 0,
   ): Promise<TrackInfoDto[]> {
     return await this.trackService.getTracksByName(name, limit, offset);
+  }
+
+  @ApiOperation({
+    summary: 'Получить список треков по жанру',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Треки найдены',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @Get('/genres/:genre')
+  async getTrackByGenre(
+    @Param('genre') name: Genre,
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+  ): Promise<TrackInfoDto[]> {
+    if (!Object.values(Genre).includes(name)) {
+      throw new BadRequestException();
+    }
+    return await this.trackService.getTracksByGenre(name, limit, offset);
   }
 
   @ApiOperation({

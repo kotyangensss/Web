@@ -1,4 +1,4 @@
-import { Genre } from '../genre';
+import { Genre } from '../../enums/genre';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TrackCreateDto {

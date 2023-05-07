@@ -6,7 +6,7 @@ import { ResponseTimeInterceptor } from './loading.interceptor';
 @UseInterceptors(ResponseTimeInterceptor)
 export class AppController {
   isAuthorized() {
-    return true;
+    return false;
   }
   constructor(private readonly appService: AppService) {}
 
@@ -37,7 +37,10 @@ export class AppController {
   @Get('/genres')
   @Render('genres')
   genres() {
-    return { message: this.isAuthorized() };
+    return {
+      message: this.isAuthorized(),
+      genres: [this.appService.getGenres()],
+    };
   }
 
   @Get('/contacts')
@@ -52,9 +55,33 @@ export class AppController {
     return { message: this.isAuthorized() };
   }
 
-  @Get('/profile')
-  @Render('profile')
-  profile() {
+  @Get('/user')
+  @Render('user')
+  user() {
+    return { message: this.isAuthorized() };
+  }
+
+  @Get('/track')
+  @Render('track')
+  track() {
+    return { message: this.isAuthorized() };
+  }
+
+  @Get('/login')
+  @Render('login')
+  login() {
+    return { message: this.isAuthorized() };
+  }
+
+  @Get('/about')
+  @Render('about')
+  about() {
+    return { message: this.isAuthorized() };
+  }
+
+  @Get('/search')
+  @Render('search')
+  search() {
     return { message: this.isAuthorized() };
   }
 }

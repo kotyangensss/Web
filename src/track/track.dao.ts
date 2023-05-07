@@ -28,6 +28,30 @@ export class TrackDao {
     });
   }
 
+  async getLatestTracks(limit: number, offset: number): Promise<track[]> {
+    return this.prisma.track.findMany({
+      skip: parseInt(String(offset)),
+      take: parseInt(String(limit)),
+      orderBy: {
+        created: 'desc',
+      },
+    });
+  }
+
+  async getTracksByGenre(
+    name: string,
+    limit: number,
+    offset: number,
+  ): Promise<track[]> {
+    return this.prisma.track.findMany({
+      skip: parseInt(String(offset)),
+      take: parseInt(String(limit)),
+      where: {
+        genres: { has: name },
+      },
+    });
+  }
+
   async createTrack(track: TrackCreateDto): Promise<track> {
     return this.prisma.track.create({
       data: {

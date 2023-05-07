@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>genres</title>
-  {{>sharedHead}}
-    <script src="/scripts/genres.js"></script>
+    <title>track</title>
+    {{>sharedHead}}
 </head>
 <body class="body">
 {{>header IsAuthorized = message}}
 <main class="main">
-   <script>genres('{{genres}}')</script>
+    <a>{{ name }}</a>
 </main>
 {{>footer}}
 </body>

@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { PlaylistInfoDto } from './dto/playlist.info.dto';
-import { Genre } from '../track/genre';
+import { Genre } from '../enums/genre';
 import { form } from '../main';
 import { PlaylistCreateDto } from './dto/playlist.create.dto';
 import { PlaylistUpdatePlaylistDto } from './dto/playlist.update.playlist.dto';
@@ -49,8 +49,8 @@ export class PlaylistController {
   })
   @Get('charts')
   async getCharts(
-    @Param('genre') genre: Genre,
-    @Param('period') period: string,
+    @Param('genre') genre?: Genre,
+    @Param('period') period?: string,
   ): Promise<PlaylistInfoDto> {
     return await this.playlistService.getChart(genre, period);
   }

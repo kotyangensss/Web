@@ -19,6 +19,14 @@ async function bootstrap() {
   });
 
   const hbs = await require('hbs');
+  const express = await require('express');
+
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
+  hbs.registerPartials(join(__dirname, '..', 'partials'));
 
   const config = new DocumentBuilder()
     .setTitle('starege-music API')
@@ -26,11 +34,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
-  hbs.registerPartials(join(__dirname, '..', 'partials'));
 
   const port = process.env.PORT || '3000';
   await app.listen(port);

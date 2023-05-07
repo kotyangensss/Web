@@ -43,6 +43,30 @@ export class TrackService {
     return ans;
   }
 
+  async getLatestTracks(limit: number, offset: number) {
+    const tracks = await this.trackDao.getLatestTracks(limit, offset).then();
+    const ans = [];
+    tracks.forEach((track) =>
+      ans.push(TrackTransformer.trackToTrackInfoDto(track)),
+    );
+    return ans;
+  }
+
+  async getTracksByGenre(
+    name: string,
+    limit: number,
+    offset: number,
+  ): Promise<TrackInfoDto[]> {
+    const tracks = await this.trackDao
+      .getTracksByGenre(name, limit, offset)
+      .then();
+    const ans = [];
+    tracks.forEach((track) =>
+      ans.push(TrackTransformer.trackToTrackInfoDto(track)),
+    );
+    return ans;
+  }
+
   async createTrack(fields: any, files: any): Promise<TrackInfoDto> {
     if (fields.name == null || fields.id == null) {
       throw new BadRequestException('не указаны имя или id');
