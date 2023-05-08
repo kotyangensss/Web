@@ -32,10 +32,11 @@
       </label>
   </div>
   {{#if IsAuthorized}}
-    <a class="profile_pic" href="/user">
-      <img class="profile_pic" src="https://cdn.7tv.app/emote/60ccf4479f5edeff9938fa77/4x.webp" alt="">
+    <a class="profile_pic" href="/user/{{id}}">
+      <img class="profile_pic" src={{pic}} alt="">
     </a>
   {{else}}
-    <a class="sign" href="/sign">вход</a>
+    <a class="sign" onclick="googleSignIn()">вход</a>
+      <a class="sign" onclick="googleRegistration()">регистрация</a>
   {{/if}}
 </header>

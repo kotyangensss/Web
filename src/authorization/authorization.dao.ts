@@ -16,15 +16,18 @@ export class AuthorizationDao {
     });
   }
 
-  async check(login: string, password: string): Promise<boolean> {
+  async check(id: string): Promise<number> {
     const user = await this.prisma.creds
-      .findUnique({
+      .findFirst({
         where: {
-          login: login,
+          password: id,
         },
       })
       .then();
-    return password == user.password;
+    if (user == null) {
+      return undefined;
+    }
+    return user.userId;
   }
 
   async delete(login: string): Promise<creds> {

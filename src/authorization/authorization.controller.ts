@@ -12,17 +12,31 @@ import {
   Post,
   Put,
   Query,
+  Render,
 } from '@nestjs/common';
 import { AuthorizationService } from './authorization.service';
 
 @ApiBearerAuth()
-@ApiTags('authorization')
-@Controller('authorization')
+@ApiTags('auth')
+@Controller('auth')
 export class AuthorizationController {
   private readonly authorizationService: AuthorizationService;
   constructor(authorizationService: AuthorizationService) {
     this.authorizationService = authorizationService;
   }
+
+  @ApiOperation({
+    summary: 'Via google',
+  })
+  @Get('callback/google')
+  @Render('auth')
+  async authByGoogle() {
+    // http://localhost:3000/auth/callback/google?code=4%2F0AbUR2VP5XEO3_tW0wNjpW2xiWjfbWZesCuGCwOFBE5JccTovZg1Nrwux7GYtx2Sm_rzvcw
+    // &scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid
+    // &authuser=0
+    // &prompt=none
+  }
+
   @ApiOperation({
     summary: 'Добавить логин и пароль',
   })
@@ -76,7 +90,7 @@ export class AuthorizationController {
   }
 
   @ApiOperation({
-    summary: 'Проверить пароль',
+    summary: 'Проверить auth id',
   })
   @ApiResponse({
     status: 200,
@@ -87,10 +101,7 @@ export class AuthorizationController {
     description: 'Пользователь не найден',
   })
   @Get('check')
-  async checkPassword(
-    @Query('login') login: string,
-    @Query('password') password: string,
-  ): Promise<boolean> {
-    return this.authorizationService.check(login, password);
+  async checkPassword(@Query('id') id: string): Promise<number> {
+    return this.authorizationService.check(id);
   }
 }

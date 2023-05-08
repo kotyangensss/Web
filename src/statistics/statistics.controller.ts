@@ -5,11 +5,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { statistics } from '@prisma/client';
 import { StatisticsService } from './statistics.service';
 import { PlaylistInfoDto } from '../playlist/dto/playlist.info.dto';
 import { TrackInfoDto } from '../track/dto/track.info.dto';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('statistics')
@@ -27,10 +28,15 @@ export class StatisticsController {
     description: 'Статистика найдена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
   @Get('track/:id')
+  @UseGuards(new AuthGuard())
   async getFullStatisticsForTrack(
     @Param('id') id: number,
     @Query('offset') offset: number,
@@ -47,10 +53,15 @@ export class StatisticsController {
     description: 'Статистика найдена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист не найден',
   })
   @Get('playlist/:id')
+  @UseGuards(new AuthGuard())
   async getFullStatisticsForPlaylist(
     @Param('id') id: number,
     @Query('offset') offset: number,
@@ -147,11 +158,16 @@ export class StatisticsController {
     description: 'Статистика добавлена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
   @Post('/create/:id')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async addStatistics(
     @Param('id') id: number,
     @Query('type') type: string,

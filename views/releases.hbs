@@ -8,9 +8,9 @@
 <body class="body">
 <main class="main">
     {{>header IsAuthorized = message}}
-<script>renderList('http://localhost:3000/track/releases')</script>
+<script>renderList(process.env.HOST)</script>
 </main>
-{{>footer}}
+{{>footer IsAuthorized = message}}
 </body>
 <script type="text/javascript" src="/amplitude/js/player.js"></script>
 </html>

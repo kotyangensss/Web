@@ -6,6 +6,8 @@ import { join } from 'path';
 import { PrismaClient } from '@prisma/client';
 import { fieldEncryptionMiddleware } from 'prisma-field-encryption';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import supertokens from 'supertokens-node';
+import { SupertokensExceptionFilter } from './auth/auth/auth.filter';
 
 export const client = new PrismaClient();
 export const formidable = require('formidable');
@@ -34,6 +36,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.enableCors({
+    origin: [process.env.HOST],
+    allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  });
+  app.useGlobalFilters(new SupertokensExceptionFilter());
 
   const port = process.env.PORT || '3000';
   await app.listen(port);

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>auth</title>
+  {{>sharedHead}}
+    <script src="/scripts/signup.js"></script>
+</head>
+<body class="body">
+{{>header IsAuthorized = message}}
+<main class="main">
+    <div class="auth_body">
+        <ul class="auth_list">
+            <a>Name</a>
+            <li class="auth_list_item"><input id="auth_name" type="text" name="login"></li>
+            <a>Picture</a>
+            <li class="auth_list_item"><input id="auth_image" type="file" name="pic" alt=""></li>
+        </ul>
+        <button class="button" onclick="signup()">Create</button>
+    </div>
+</main>
+{{>footer IsAuthorized = message}}
+</body>
+<script type="text/javascript" src="/amplitude/js/player.js"></script>
+</html>

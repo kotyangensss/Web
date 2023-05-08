@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,6 +23,7 @@ import { UserCreateDto } from './dto/user.create.dto';
 import { UserUpdateDto } from './dto/user.update.dto';
 import { UserInfoDto } from './dto/userInfoDto';
 import { form } from '../main';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('user')
@@ -68,6 +70,7 @@ export class UserController {
   })
   @Post('/create')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async createUser(
     @Req() req,
     @Body() user: UserCreateDto,
@@ -93,11 +96,16 @@ export class UserController {
     description: 'Плохой запрос',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Пользователь не найден',
   })
   @Put('/update/:id')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async updateUser(
     @Req() req,
     @Param('id', ParseIntPipe) id: number,
@@ -124,10 +132,15 @@ export class UserController {
     description: 'Плохой запрос',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Пользователь не найден',
   })
   @Delete('/delete/:id')
+  @UseGuards(new AuthGuard())
   async deleteUser(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<UserInfoDto> {
@@ -142,6 +155,7 @@ export class UserController {
     description: 'Пользователи найдены',
   })
   @Get('/search/:name')
+  @UseGuards(new AuthGuard())
   async getUsers(
     @Param('name') name: string,
     @Query('limit') limit = 10,

@@ -21,6 +21,7 @@
     padding: 1%;
     font-size: 15px;
     text-transform: uppercase;
+    cursor: pointer;
 }
 
 .profile_pic {

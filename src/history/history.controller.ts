@@ -5,11 +5,20 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { HistoryCreateDto } from './dto/history.create.dto';
 import { HistoryService } from './history.service';
 import { history } from '@prisma/client';
 import { form } from '../main';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('history')
@@ -27,10 +36,15 @@ export class HistoryController {
     description: 'История найдена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'История не найдена',
   })
   @Get('user/:id')
+  @UseGuards(new AuthGuard())
   async getUsersHistory(
     @Param('id') id: number,
     @Param('offset') offset = 0,
@@ -48,10 +62,15 @@ export class HistoryController {
     description: 'История найдена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'История не найдена',
   })
   @Get('track/:id')
+  @UseGuards(new AuthGuard())
   async getTracksHistory(
     @Param('id') id: number,
     @Param('offset') offset = 0,
@@ -69,10 +88,15 @@ export class HistoryController {
     description: 'История найдена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'История не найдена',
   })
   @Get('playlist/:id')
+  @UseGuards(new AuthGuard())
   async getPlaylistHistory(
     @Param('id') id: number,
     @Param('offset') offset = 0,
@@ -93,8 +117,13 @@ export class HistoryController {
     status: 400,
     description: 'Плохой ввод',
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
   @Post('')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async createHistory(
     @Req() req,
     @Body() history: HistoryCreateDto,

@@ -2,7 +2,7 @@ import { Dropbox } from 'dropbox';
 import * as fs from 'fs';
 export class dropbox {
   private static readonly DB_ACCESS_TOKEN =
-    'sl.BdqEADIscg18YLtqlxjtnWmDYpMRNLlRSTB2HAA8GWZXMja_fLkVrxOV4XZ4IA3rc9YuFF_Vgq-7-J-zb7o_ITrUUUE22yfBhq-xAeeNjyrLitb2Daa-vtQOPHspKEC2w4vZZ3Yq';
+    'sl.Bd-Ij0tpB6uI3hq6Bhobx7hnru28AHgRG13VyqNA_LK7R1cPrtwNMjs_q5fGDcYC5Q9crCUWZJ6L8-_7WfdmHNsuQvVn_7fxKElhzC_RFJwGjTPB1J2zfRhYuy-f-wyfyuzJRJb6';
   static async delete(link: string, folder: Folder) {
     const dbx = new Dropbox({ accessToken: dropbox.DB_ACCESS_TOKEN });
     const name = folder + dropbox.extractName(link);

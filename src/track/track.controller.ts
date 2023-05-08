@@ -18,6 +18,7 @@ import {
   Query,
   Render,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { TrackInfoDto } from './dto/track.info.dto';
@@ -25,6 +26,7 @@ import { TrackCreateDto } from './dto/track.create.dto';
 import { TrackUpdateDto } from './dto/track.update.dto';
 import { form } from '../main';
 import { Genre } from '../enums/genre';
+import { AuthGuard } from '../auth/auth/auth.guard';
 @ApiBearerAuth()
 @ApiTags('track')
 @Controller('track')
@@ -120,8 +122,13 @@ export class TrackController {
     status: 400,
     description: 'Неправильный ввод',
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
   @Post('/upload')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async createTrack(
     @Req() req,
     @Body() track: TrackCreateDto,
@@ -147,11 +154,16 @@ export class TrackController {
     description: 'Плохой запрос',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
   @Put('/update/:id')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async updateTrack(
     @Req() req,
     @Param('id', ParseIntPipe) id: number,
@@ -178,10 +190,15 @@ export class TrackController {
     description: 'Плохой запрос',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Трек не найден',
   })
   @Delete('/delete/:id')
+  @UseGuards(new AuthGuard())
   async deleteTrack(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<TrackInfoDto> {

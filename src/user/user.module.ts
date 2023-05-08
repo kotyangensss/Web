@@ -8,5 +8,6 @@ import { UserDao } from './user.dao';
   imports: [],
   controllers: [UserController],
   providers: [UserService, UserDao, PrismaService],
+  exports: [UserService],
 })
 export class UserModule {}

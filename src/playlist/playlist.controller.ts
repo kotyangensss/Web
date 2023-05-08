@@ -15,6 +15,7 @@ import {
   Put,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { PlaylistInfoDto } from './dto/playlist.info.dto';
@@ -22,6 +23,7 @@ import { Genre } from '../enums/genre';
 import { form } from '../main';
 import { PlaylistCreateDto } from './dto/playlist.create.dto';
 import { PlaylistUpdatePlaylistDto } from './dto/playlist.update.playlist.dto';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('playlist')
@@ -99,10 +101,15 @@ export class PlaylistController {
     description: 'Плейлист удален',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист не найден',
   })
   @Delete('/delete/:id')
+  @UseGuards(new AuthGuard())
   async deletePlaylist(@Param('id') id: number) {
     await this.playlistService.deletePlaylist(id);
   }
@@ -114,8 +121,17 @@ export class PlaylistController {
     status: 200,
     description: 'Плейлист создан',
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
   @Post('playlist/create')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async createAlbum(
     @Req() req,
     @Body() playlist: PlaylistCreateDto,
@@ -137,11 +153,16 @@ export class PlaylistController {
     description: 'плейлист обновлен',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Альбом не найден',
   })
   @Put('playlist/update/:id')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async updateAlbum(
     @Req() req,
     @Param('id') id: number,
@@ -168,10 +189,15 @@ export class PlaylistController {
     description: 'Трек удален из плейлиста',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
   @Delete(':playlistId')
+  @UseGuards(new AuthGuard())
   async deleteTrackFromPlaylist(
     @Param('playlistId') playlistId: number,
     @Param('trackId') trackId: number,
@@ -187,10 +213,15 @@ export class PlaylistController {
     description: 'Трек добавлен в плейлист',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
   @Post(':playlistId')
+  @UseGuards(new AuthGuard())
   async addTrackToPlaylist(
     @Param('playlistId') playlistId: number,
     @Param('trackId') trackId: number,
@@ -199,4 +230,4 @@ export class PlaylistController {
   }
 }
 
-//TODO: сделать formdata унифицированной, добавить всякие 403 400 ошибки, явно указывать тип во всех массивах
+//TODO: добавить всякие 403 400 ошибки, явно указывать тип во всех массивах

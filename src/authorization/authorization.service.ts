@@ -35,9 +35,9 @@ export class AuthorizationService {
     }
   }
 
-  async check(login: string, password: string): Promise<boolean> {
+  async check(id: string): Promise<number> {
     try {
-      return this.authorizationDao.check(login, password);
+      return this.authorizationDao.check(id);
     } catch (e) {
       throw e;
     }
