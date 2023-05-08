@@ -25,13 +25,14 @@ function createTrackList(tracks) {
   return trackList;
 }
 
-async function renderList(url) {
+async function renderList() {
   let loading = document.createElement('img');
   loading.classList.add('loading');
   loading.src = 'https://cdn.betterttv.net/emote/63608735ed98a03da0ce6613/3x';
   loading.alt = 'loading';
   document.body.getElementsByClassName('main')[0].appendChild(loading);
   try {
+    const url = new URL(window.location.href).origin + '/track/releases';
     const tracks = await requestReleases(url);
     let trackList = createTrackList(tracks);
     document.getElementsByClassName('loading')[0].style.display = 'none';

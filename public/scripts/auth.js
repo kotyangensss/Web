@@ -1,7 +1,8 @@
-const host = 'http://localhost:3000';
+const host = new URL(window.location.href).origin;
+
 supertokens.init({
   appInfo: {
-    apiDomain: 'http://localhost:3000',
+    apiDomain: host,
     apiBasePath: '/api/auth',
     appName: 'starege-xdd',
   },

@@ -30,12 +30,7 @@ export class AuthorizationController {
   })
   @Get('callback/google')
   @Render('auth')
-  async authByGoogle() {
-    // http://localhost:3000/auth/callback/google?code=4%2F0AbUR2VP5XEO3_tW0wNjpW2xiWjfbWZesCuGCwOFBE5JccTovZg1Nrwux7GYtx2Sm_rzvcw
-    // &scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid
-    // &authuser=0
-    // &prompt=none
-  }
+  async authByGoogle() {}
 
   @ApiOperation({
     summary: 'Добавить логин и пароль',

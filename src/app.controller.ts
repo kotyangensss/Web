@@ -82,13 +82,6 @@ export class AppController {
   }
 
   @UseGuards(new AuthGuard({ sessionRequired: false }))
-  @Get('/search')
-  @Render('search')
-  async search(@Session() session?: SessionContainer) {
-    return await this.getSession(session).then();
-  }
-
-  @UseGuards(new AuthGuard({ sessionRequired: false }))
   @Get('/signin')
   @Render('signin')
   async signIn() {
