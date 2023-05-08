@@ -8,7 +8,7 @@
 <body class="body">
 <main class="main">
     {{>header IsAuthorized = message}}
-<script>renderList(process.env.HOST)</script>
+<script>renderList('http://localhost:3000/track/releases')</script>
 </main>
 {{>footer IsAuthorized = message}}
 </body>

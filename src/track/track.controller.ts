@@ -16,7 +16,6 @@ import {
   Post,
   Put,
   Query,
-  Render,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -27,13 +26,16 @@ import { TrackUpdateDto } from './dto/track.update.dto';
 import { form } from '../main';
 import { Genre } from '../enums/genre';
 import { AuthGuard } from '../auth/auth/auth.guard';
+import { Gateway } from '../gateway/gateway';
 @ApiBearerAuth()
 @ApiTags('track')
 @Controller('track')
 export class TrackController {
   private readonly trackService: TrackService;
-  constructor(trackService: TrackService) {
+  private readonly gateway: Gateway;
+  constructor(trackService: TrackService, gateway: Gateway) {
     this.trackService = trackService;
+    this.gateway = gateway;
   }
 
   @ApiOperation({
@@ -67,9 +69,10 @@ export class TrackController {
     description: 'Трек не найден',
   })
   @Get(':id')
-  @Render('track')
   async getTrack(@Param('id', ParseIntPipe) id: number) {
-    return await this.trackService.getTrack(id).then();
+    const track = await this.trackService.getTrack(id).then();
+    this.gateway.onNewTrack(track);
+    return track;
   }
 
   @ApiOperation({
@@ -139,7 +142,12 @@ export class TrackController {
       });
     });
 
-    return this.trackService.createTrack(formFields[0], formFields[1]);
+    const created = await this.trackService.createTrack(
+      formFields[0],
+      formFields[1],
+    );
+    this.gateway.onNewTrack(created);
+    return created;
   }
 
   @ApiOperation({
@@ -175,7 +183,14 @@ export class TrackController {
       });
     });
 
-    return this.trackService.updateTrack(id, formFields[0], formFields[1]);
+    const updated = await this.trackService.updateTrack(
+      id,
+      formFields[0],
+      formFields[1],
+    );
+    this.gateway.onNewTrack(updated);
+
+    return updated;
   }
 
   @ApiOperation({

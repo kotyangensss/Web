@@ -23,8 +23,8 @@ export class TrackTransformer {
     return new TrackCreateDto(
       fields.name,
       fields.id,
-      fields.featIds,
-      fields.featNames,
+      fields.featIds == '' ? [] : fields.featIds,
+      fields.featNames == '' ? [] : fields.featNames,
       cover,
       source,
       length,

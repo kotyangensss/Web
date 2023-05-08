@@ -3,9 +3,10 @@ import { TrackController } from './track.controller';
 import { TrackService } from './track.service';
 import { TrackDao } from './track.dao';
 import { PrismaService } from '../prisma.service';
+import { GatewayModule } from '../gateway/gateway.module';
 
 @Module({
-  imports: [],
+  imports: [GatewayModule],
   controllers: [TrackController],
   providers: [TrackService, TrackDao, PrismaService],
   exports: [TrackService],

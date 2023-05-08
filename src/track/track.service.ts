@@ -87,6 +87,7 @@ export class TrackService {
     const length = await getAudioDurationInSeconds(
       files.source.filepath,
     ).then();
+    console.log(fields);
 
     const track = TrackTransformer.fieldsToTrackCreateDto(
       fields,

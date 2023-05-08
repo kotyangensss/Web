@@ -12,6 +12,7 @@ import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import * as SuperTokensConfig from './auth/supertokens/supertokens.config';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import * as SuperTokensConfig from './auth/supertokens/supertokens.config';
     HistoryModule,
     StatisticsModule,
     AuthorizationModule,
+    GatewayModule,
     NestjsFormDataModule.config({ storage: MemoryStoredFile }),
   ],
   controllers: [AppController],
