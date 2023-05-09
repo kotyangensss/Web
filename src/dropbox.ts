@@ -1,8 +1,8 @@
 import { Dropbox } from 'dropbox';
 import * as fs from 'fs';
+import * as process from 'process';
 export class dropbox {
-  private static readonly DB_ACCESS_TOKEN =
-    'sl.BeBKKJ0uq5AqybnyBuDZEwTqevVzgiVESUd-j2rRndWqL2CJ9Hk2j4vr_NP_hUlrwdKqzPj-r0yETd8hLoiEBhS-LwpJu8TDTMjvK_7G2cFhOM2hBkXfmkpORuqV_g26rqLwqesm';
+  private static readonly DB_ACCESS_TOKEN = process.env.DB_ACCESS_TOKEN;
   static async delete(link: string, folder: Folder) {
     const dbx = new Dropbox({ accessToken: dropbox.DB_ACCESS_TOKEN });
     const name = folder + dropbox.extractName(link);
