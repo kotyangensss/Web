@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { Injectable } from '@nestjs/common';
-@WebSocketGateway(8000, {
+@WebSocketGateway(3010, {
   cors: {
     origin: '*',
   },
