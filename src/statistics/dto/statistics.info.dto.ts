@@ -14,20 +14,20 @@ export class StatisticsInfoDto {
   private readonly num: number;
 
   @ApiProperty()
-  private readonly lastMonthNum: number;
+  private readonly month: number;
 
   constructor(
     id: number,
     playlistId: number,
     trackId: number,
     num: number,
-    lastMonthNum: number,
+    month: number,
   ) {
     this.id = id;
     this.playlistId = playlistId;
     this.trackId = trackId;
     this.num = num;
-    this.lastMonthNum = lastMonthNum;
+    this.month = month;
   }
 
   get getId(): number {
@@ -45,7 +45,7 @@ export class StatisticsInfoDto {
     return this.num;
   }
 
-  get getLastMonthNum(): number {
-    return this.lastMonthNum;
+  get getMonth(): number {
+    return this.month;
   }
 }

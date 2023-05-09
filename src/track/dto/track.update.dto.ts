@@ -1,4 +1,4 @@
-import { Genre } from '../genre';
+import { Genre } from '../../enums/genre';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TrackUpdateDto {
@@ -14,13 +14,13 @@ export class TrackUpdateDto {
   @ApiProperty({ format: 'binary', required: false })
   private readonly cover: string;
 
-  @ApiProperty({ format: 'binary' })
+  @ApiProperty({ format: 'binary', required: false })
   private readonly source: string;
 
   @ApiProperty({ required: false })
   private readonly length: number;
 
-  @ApiProperty({ enum: Genre, isArray: true })
+  @ApiProperty({ enum: Genre, isArray: true, required: false })
   private readonly genres: Genre[];
 
   @ApiProperty({ format: 'binary', required: false })

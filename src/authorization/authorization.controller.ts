@@ -5,21 +5,33 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
-  Body,
   Controller,
   Delete,
   Get,
-  NotImplementedException,
   Param,
   Post,
   Put,
+  Query,
+  Render,
 } from '@nestjs/common';
-import { AuthorizationCreateDto } from './dto/authorization.create.dto';
+import { AuthorizationService } from './authorization.service';
 
 @ApiBearerAuth()
-@ApiTags('authorization')
-@Controller('authorization')
+@ApiTags('auth')
+@Controller('auth')
 export class AuthorizationController {
+  private readonly authorizationService: AuthorizationService;
+  constructor(authorizationService: AuthorizationService) {
+    this.authorizationService = authorizationService;
+  }
+
+  @ApiOperation({
+    summary: 'Via google',
+  })
+  @Get('callback/google')
+  @Render('auth')
+  async authByGoogle() {}
+
   @ApiOperation({
     summary: 'Добавить логин и пароль',
   })
@@ -27,9 +39,13 @@ export class AuthorizationController {
     status: 200,
     description: 'Авторизация добавлена',
   })
-  @Post('')
-  async createCred(@Body() cred: AuthorizationCreateDto): Promise<number> {
-    throw new NotImplementedException();
+  @Post('/create')
+  async createCred(
+    @Query('id') id: number,
+    @Query('login') login: string,
+    @Query('password') password: string,
+  ): Promise<string> {
+    return this.authorizationService.create(id, login, password);
   }
 
   @ApiOperation({
@@ -43,9 +59,9 @@ export class AuthorizationController {
     status: 404,
     description: 'Пользователь не найден',
   })
-  @Delete(':login')
-  async deleteCred(@Param('login') login: string): Promise<number> {
-    throw new NotImplementedException();
+  @Delete('/delete/:login')
+  async deleteCred(@Param('login') login: string): Promise<string> {
+    return this.authorizationService.delete(login);
   }
 
   @ApiOperation({
@@ -59,17 +75,17 @@ export class AuthorizationController {
     status: 404,
     description: 'Пользователь не найден',
   })
-  @Put(':login')
+  @Put('/update/:login')
   async updateCred(
     @Param('login') login: string,
-    @Param('newLogin') newLogin: string,
-    @Param('newPassword') newPassword: string,
-  ): Promise<number> {
-    throw new NotImplementedException();
+    @Query('newLogin') newLogin: string,
+    @Query('newPassword') newPassword: string,
+  ): Promise<string> {
+    return this.authorizationService.update(login, newLogin, newPassword);
   }
 
   @ApiOperation({
-    summary: 'Проверить пароль',
+    summary: 'Проверить auth id',
   })
   @ApiResponse({
     status: 200,
@@ -80,7 +96,7 @@ export class AuthorizationController {
     description: 'Пользователь не найден',
   })
   @Get('check')
-  async checkPassword(@Param('password') password: string): Promise<boolean> {
-    throw new NotImplementedException();
+  async checkPassword(@Query('id') id: string): Promise<number> {
+    return this.authorizationService.check(id);
   }
 }

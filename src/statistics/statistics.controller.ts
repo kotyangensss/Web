@@ -1,27 +1,25 @@
 import {
   ApiBearerAuth,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotImplementedException,
-  Param,
-  Post,
-} from '@nestjs/common';
-import { StatisticsInfoDto } from './dto/statistics.info.dto';
-import { StatisticsUpdateDto } from './dto/statistics.update.dto';
-import { Genre } from '../track/genre';
-import { PlaylistType } from '../playlist/playlist.type';
+import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { statistics } from '@prisma/client';
+import { StatisticsService } from './statistics.service';
+import { PlaylistInfoDto } from '../playlist/dto/playlist.info.dto';
+import { TrackInfoDto } from '../track/dto/track.info.dto';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('statistics')
 @Controller('statistics')
 export class StatisticsController {
+  private readonly statisticsService: StatisticsService;
+  constructor(statisticsService: StatisticsService) {
+    this.statisticsService = statisticsService;
+  }
   @ApiOperation({
     summary: 'Получить полную статистику по треку',
   })
@@ -29,13 +27,22 @@ export class StatisticsController {
     status: 200,
     description: 'Статистика найдена',
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Трек не найден',
+  })
   @Get('track/:id')
+  @UseGuards(new AuthGuard())
   async getFullStatisticsForTrack(
     @Param('id') id: number,
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-  ): Promise<StatisticsInfoDto[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+  ): Promise<statistics[]> {
+    return this.statisticsService.getTrackStat(id, limit, offset);
   }
 
   @ApiOperation({
@@ -45,13 +52,22 @@ export class StatisticsController {
     status: 200,
     description: 'Статистика найдена',
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Плейлист не найден',
+  })
   @Get('playlist/:id')
+  @UseGuards(new AuthGuard())
   async getFullStatisticsForPlaylist(
     @Param('id') id: number,
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-  ): Promise<StatisticsInfoDto[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+  ): Promise<statistics[]> {
+    return this.statisticsService.getPlaylistStat(id, limit, offset);
   }
 
   @ApiOperation({
@@ -67,11 +83,11 @@ export class StatisticsController {
   })
   @Get('top-tracks-last-month')
   async getMostPopularTracksLastMonth(
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-    @Param('genres') genres: Genre[],
-  ): Promise<number[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+    // @Param('genres') genres: Genre[],
+  ): Promise<TrackInfoDto[]> {
+    return this.statisticsService.getTopTracks(limit, offset, true);
   }
 
   @ApiOperation({
@@ -87,11 +103,11 @@ export class StatisticsController {
   })
   @Get('top-playlists-last-month')
   async getMostPopularPlaylistsLastMonth(
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-    @Param('genres') types: PlaylistType[],
-  ): Promise<number[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+    // @Param('genres') types: PlaylistType[],
+  ): Promise<PlaylistInfoDto[]> {
+    return this.statisticsService.getTopPlaylists(limit, offset, true);
   }
 
   @ApiOperation({
@@ -107,11 +123,11 @@ export class StatisticsController {
   })
   @Get('top-tracks')
   async getMostPopularTracks(
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-    @Param('genres') genres: Genre[],
-  ): Promise<number[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+    // @Param('genres') genres: Genre[],
+  ): Promise<TrackInfoDto[]> {
+    return this.statisticsService.getTopTracks(limit, offset, false);
   }
 
   @ApiOperation({
@@ -127,11 +143,11 @@ export class StatisticsController {
   })
   @Get('top-playlists')
   async getMostPopularPlaylists(
-    @Param('offset') offset: number,
-    @Param('limit') limit: number,
-    @Param('types') types: PlaylistType[],
-  ): Promise<number[]> {
-    throw new NotImplementedException();
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+    // @Param('types') types: PlaylistType[],
+  ): Promise<PlaylistInfoDto[]> {
+    return this.statisticsService.getTopPlaylists(limit, offset, false);
   }
 
   @ApiOperation({
@@ -142,51 +158,21 @@ export class StatisticsController {
     description: 'Статистика добавлена',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
-  @Post(':trackId')
+  @Post('/create/:id')
+  @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async addStatistics(
-    @Param('trackId') trackId: number,
-    @Param('playlistId') playlistId: number,
-  ): Promise<StatisticsInfoDto> {
-    throw new NotImplementedException();
-  }
-
-  @ApiOperation({
-    summary: 'Обновить статистику',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Статистика обновлена',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Плейлист или трек не найден',
-  })
-  @Post(':id')
-  async updateStatistics(
     @Param('id') id: number,
-    @Body() statistics: StatisticsUpdateDto,
-  ): Promise<StatisticsInfoDto> {
-    throw new NotImplementedException();
-  }
-
-  @ApiOperation({
-    summary: 'Удалить статистику по треку',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Статистика удалена',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Трек не найден',
-  })
-  @Delete(':trackId')
-  async deleteStatistics(
-    @Param('trackId') trackId: number,
-  ): Promise<StatisticsInfoDto[]> {
-    throw new NotImplementedException();
+    @Query('type') type: string,
+    @Query('date') date: Date,
+  ): Promise<statistics> {
+    return this.statisticsService.addStat(id, type, new Date(date));
   }
 }

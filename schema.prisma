@@ -12,7 +12,7 @@ model user {
   email      String     @unique
   name       String
   user_type  String
-  bio        String
+  bio        String?
   created    DateTime   @default(now())
   profilePic String
   tracks     track[]
@@ -33,7 +33,7 @@ model track {
   created         DateTime          @default(now())
   length          Int
   genres          String[]
-  lyrics          String
+  lyrics          String?
   history         history[]
   trackToPlaylist trackToPlaylist[]
   statistics      statistics[]
@@ -54,7 +54,7 @@ model playlist {
 }
 
 model trackToPlaylist {
-  id         Int      @id
+  id         Int      @id @default(autoincrement())
   playlistId Int
   playlist   playlist @relation(fields: [playlistId], references: [playlistId])
   trackId    Int
@@ -63,20 +63,20 @@ model trackToPlaylist {
 }
 
 model charts {
-  playlistId Int      @id
+  playlistId Int      @id @default(autoincrement())
   playlist   playlist @relation(fields: [playlistId], references: [playlistId])
   genre      String
   period     String
 }
 
 model statistics {
-  id           Int      @id @default(autoincrement())
-  playlistId   Int
-  playlist     playlist @relation(fields: [playlistId], references: [playlistId])
-  trackId      Int
-  track        track    @relation(fields: [trackId], references: [trackId])
-  num          BigInt
-  lastMonthNum Int
+  id         Int       @id @default(autoincrement())
+  playlistId Int?
+  playlist   playlist? @relation(fields: [playlistId], references: [playlistId])
+  trackId    Int?
+  track      track?    @relation(fields: [trackId], references: [trackId])
+  num        Int
+  month      Int
 }
 
 model history {

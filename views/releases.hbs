@@ -3,12 +3,14 @@
 <head>
   <title>releases</title>
   {{>sharedHead}}
+    <script src="/scripts/render-list.js"></script>
 </head>
 <body class="body">
-{{>header IsAuthorized = message}}
 <main class="main">
+    {{>header IsAuthorized = message}}
+<script>renderList()</script>
 </main>
-{{>footer}}
+{{>footer IsAuthorized = message}}
 </body>
-<script type="text/javascript" src="amplitude/js/player.js"></script>
+<script type="text/javascript" src="/amplitude/js/player.js"></script>
 </html>

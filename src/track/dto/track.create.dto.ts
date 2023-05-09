@@ -1,9 +1,12 @@
-import { Genre } from '../genre';
+import { Genre } from '../../enums/genre';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TrackCreateDto {
   @ApiProperty()
   private readonly name: string;
+
+  @ApiProperty()
+  private readonly id: number;
 
   @ApiProperty({ required: false })
   private readonly featIds: number[];
@@ -17,7 +20,7 @@ export class TrackCreateDto {
   @ApiProperty({ format: 'binary' })
   private readonly source: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   private readonly length: number;
 
   @ApiProperty({ enum: Genre, isArray: true })
@@ -28,6 +31,7 @@ export class TrackCreateDto {
 
   constructor(
     name: string,
+    id: number,
     featIds: number[],
     featNames: string[],
     cover: string,
@@ -37,6 +41,7 @@ export class TrackCreateDto {
     lyrics: string,
   ) {
     this.name = name;
+    this.id = id;
     this.featIds = featIds;
     this.featNames = featNames;
     this.cover = cover;
@@ -48,6 +53,10 @@ export class TrackCreateDto {
 
   get getName(): string {
     return this.name;
+  }
+
+  get getId(): number {
+    return this.id;
   }
 
   get getFeatIds(): number[] {

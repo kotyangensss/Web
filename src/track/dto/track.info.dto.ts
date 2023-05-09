@@ -45,6 +45,7 @@ export class TrackInfoDto {
     created: string,
     length: number,
     genres: string[],
+    lyrics: string,
   ) {
     this.id = id;
     this.name = name;
@@ -56,6 +57,7 @@ export class TrackInfoDto {
     this.created = created;
     this.length = length;
     this.genres = genres;
+    this.lyrics = lyrics;
   }
 
   get getId(): number {
@@ -96,5 +98,9 @@ export class TrackInfoDto {
 
   get getGenres(): string[] {
     return this.genres;
+  }
+
+  get getLyrics(): string {
+    return this.lyrics;
   }
 }

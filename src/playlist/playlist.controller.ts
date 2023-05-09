@@ -10,18 +10,20 @@ import {
   Controller,
   Delete,
   Get,
-  NotImplementedException,
   Param,
   Post,
   Put,
+  Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { PlaylistInfoDto } from './dto/playlist.info.dto';
-import { PlaylistCreateAlbumDto } from './dto/playlist.create.album.dto';
-import { PlaylistUpdateAlbumDto } from './dto/playlist.update.album.dto';
-import { PlaylistCreatePlaylistDto } from './dto/playlist.create.playlist.dto';
+import { Genre } from '../enums/genre';
+import { form } from '../main';
+import { PlaylistCreateDto } from './dto/playlist.create.dto';
 import { PlaylistUpdatePlaylistDto } from './dto/playlist.update.playlist.dto';
-import { PlaylistCreateSingleDto } from './dto/playlist.create.single.dto';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('playlist')
@@ -40,12 +42,19 @@ export class PlaylistController {
     description: 'Чарты найдены',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Неправильный ввод',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист не найден',
   })
   @Get('charts')
-  async getCharts(@Param('id') id: number): Promise<PlaylistInfoDto> {
-    throw new NotImplementedException();
+  async getCharts(
+    @Param('genre') genre?: Genre,
+    @Param('period') period?: string,
+  ): Promise<PlaylistInfoDto> {
+    return await this.playlistService.getChart(genre, period);
   }
 
   @ApiOperation({
@@ -56,12 +65,16 @@ export class PlaylistController {
     description: 'Плейлист найден',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Неправильный ввод',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист не найден',
   })
   @Get(':id')
   async getPlaylist(@Param('id') id: number): Promise<PlaylistInfoDto> {
-    throw new NotImplementedException();
+    return await this.playlistService.getPlaylist(id);
   }
 
   @ApiOperation({
@@ -71,9 +84,13 @@ export class PlaylistController {
     status: 200,
     description: 'Плейлисты найдены',
   })
-  @Get(':name')
-  async getPlaylists(@Param('name') name: string): Promise<PlaylistInfoDto> {
-    throw new NotImplementedException();
+  @Get('/search/:name')
+  async getPlaylists(
+    @Param('name') name: string,
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+  ): Promise<PlaylistInfoDto[]> {
+    return await this.playlistService.getAlbumsByName(name, limit, offset);
   }
 
   @ApiOperation({
@@ -84,93 +101,84 @@ export class PlaylistController {
     description: 'Плейлист удален',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист не найден',
   })
-  @Delete(':id')
-  async deletePlaylist(@Param('id') id: number): Promise<number> {
-    throw new NotImplementedException();
+  @Delete('/delete/:id')
+  @UseGuards(new AuthGuard())
+  async deletePlaylist(@Param('id') id: number) {
+    await this.playlistService.deletePlaylist(id);
   }
 
   @ApiOperation({
-    summary: 'Создать Альбом',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Альбом создан',
-  })
-  @Post('album')
-  @ApiConsumes('multipart/form-data')
-  async createAlbum(@Body() track: PlaylistCreateAlbumDto): Promise<number> {
-    throw new NotImplementedException();
-  }
-
-  @ApiOperation({
-    summary: 'Обновить альбом',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Альбом обновлен',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Альбом не найден',
-  })
-  @Put('album/:id')
-  @ApiConsumes('multipart/form-data')
-  async updateAlbum(
-    @Param('album/id') id: number,
-    @Body() track: PlaylistUpdateAlbumDto,
-  ): Promise<number> {
-    throw new NotImplementedException();
-  }
-
-  @ApiOperation({
-    summary: 'Создать юзерский плейлист',
+    summary: 'Создать Плейлист',
   })
   @ApiResponse({
     status: 200,
     description: 'Плейлист создан',
   })
-  @Post('user')
+  @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @Post('playlist/create')
   @ApiConsumes('multipart/form-data')
-  async createUserPlaylist(
-    @Body() track: PlaylistCreatePlaylistDto,
-  ): Promise<number> {
-    throw new NotImplementedException();
+  @UseGuards(new AuthGuard())
+  async createAlbum(
+    @Req() req,
+    @Body() playlist: PlaylistCreateDto,
+  ): Promise<PlaylistInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
+
+    return this.playlistService.createPlaylist(formFields[0], formFields[1]);
   }
 
   @ApiOperation({
-    summary: 'Обновить юзерский плейлист',
+    summary: 'Обновить плейлист',
   })
   @ApiResponse({
     status: 200,
-    description: 'Плейлист обновлен',
+    description: 'плейлист обновлен',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
   })
   @ApiResponse({
     status: 404,
-    description: 'Плейлст не найден',
+    description: 'Альбом не найден',
   })
-  @Put('user/:id')
+  @Put('playlist/update/:id')
   @ApiConsumes('multipart/form-data')
-  async updateUserPlaylist(
+  @UseGuards(new AuthGuard())
+  async updateAlbum(
+    @Req() req,
     @Param('id') id: number,
-    @Body() track: PlaylistUpdatePlaylistDto,
-  ): Promise<number> {
-    throw new NotImplementedException();
-  }
+    @Body() playlist: PlaylistUpdatePlaylistDto,
+  ): Promise<PlaylistInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
 
-  @ApiOperation({
-    summary: 'Создать сингл',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Сингл создан',
-  })
-  @Post('single')
-  @ApiConsumes('multipart/form-data')
-  async createSingle(@Body() track: PlaylistCreateSingleDto): Promise<number> {
-    throw new NotImplementedException();
+    return this.playlistService.updatePlaylist(
+      id,
+      formFields[0],
+      formFields[1],
+    );
   }
 
   @ApiOperation({
@@ -181,33 +189,45 @@ export class PlaylistController {
     description: 'Трек удален из плейлиста',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
   @Delete(':playlistId')
+  @UseGuards(new AuthGuard())
   async deleteTrackFromPlaylist(
     @Param('playlistId') playlistId: number,
     @Param('trackId') trackId: number,
-  ): Promise<number> {
-    throw new NotImplementedException();
+  ) {
+    await this.playlistService.deleteTrackFromPlaylist(playlistId, trackId);
   }
 
   @ApiOperation({
-    summary: 'Добвить трек в плейлиста',
+    summary: 'Добвить трек в плейлист',
   })
   @ApiResponse({
     status: 200,
     description: 'Трек добавлен в плейлист',
   })
   @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Плейлист или трек не найден',
   })
   @Post(':playlistId')
+  @UseGuards(new AuthGuard())
   async addTrackToPlaylist(
     @Param('playlistId') playlistId: number,
     @Param('trackId') trackId: number,
-  ): Promise<number> {
-    throw new NotImplementedException();
+  ) {
+    await this.playlistService.addTrackToPlaylist(playlistId, trackId);
   }
 }
+
+//TODO: добавить всякие 403 400 ошибки, явно указывать тип во всех массивах

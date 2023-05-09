@@ -3,10 +3,13 @@ import {
   Controller,
   Delete,
   Get,
-  NotImplementedException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -18,7 +21,9 @@ import {
 import { UserService } from './user.service';
 import { UserCreateDto } from './dto/user.create.dto';
 import { UserUpdateDto } from './dto/user.update.dto';
-import { UserinfoDto } from './dto/user.info.dto';
+import { UserInfoDto } from './dto/userInfoDto';
+import { form } from '../main';
+import { AuthGuard } from '../auth/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('user')
@@ -36,12 +41,16 @@ export class UserController {
     description: 'Пользователь найден',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Пользователь не найден',
   })
   @Get(':id')
-  async getUser(@Param('id') id: number): Promise<UserinfoDto> {
-    throw new NotImplementedException();
+  async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserInfoDto> {
+    return await this.userService.getUser(id);
   }
 
   @ApiOperation({
@@ -52,12 +61,27 @@ export class UserController {
     description: 'Пользователь создан',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
     status: 409,
     description: 'Email уже занят',
   })
-  @Post('')
-  async createUser(@Body() user: UserCreateDto): Promise<UserinfoDto> {
-    throw new NotImplementedException();
+  @Post('/create')
+  @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
+  async createUser(
+    @Req() req,
+    @Body() user: UserCreateDto,
+  ): Promise<UserInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
+
+    return this.userService.createUser(formFields[0], formFields[1]);
   }
 
   @ApiOperation({
@@ -68,16 +92,32 @@ export class UserController {
     description: 'Пользователь обновлен',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Пользователь не найден',
   })
-  @Put(':id')
+  @Put('/update/:id')
   @ApiConsumes('multipart/form-data')
+  @UseGuards(new AuthGuard())
   async updateUser(
-    @Param('id') id: number,
+    @Req() req,
+    @Param('id', ParseIntPipe) id: number,
     @Body() user?: UserUpdateDto,
-  ): Promise<number> {
-    throw new NotImplementedException();
+  ): Promise<UserInfoDto> {
+    const formFields = await new Promise(function (resolve) {
+      form.parse(req, (err, fields, files) => {
+        resolve([fields, files]);
+      });
+    });
+
+    return this.userService.updateUser(id, formFields[0], formFields[1]);
   }
 
   @ApiOperation({
@@ -88,12 +128,23 @@ export class UserController {
     description: 'Пользователь удален',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Плохой запрос',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизованный',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Пользователь не найден',
   })
-  @Delete(':id')
-  async deleteUser(@Param('id') id: number): Promise<number> {
-    throw new NotImplementedException();
+  @Delete('/delete/:id')
+  @UseGuards(new AuthGuard())
+  async deleteUser(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<UserInfoDto> {
+    return this.userService.deleteUser(id);
   }
 
   @ApiOperation({
@@ -103,8 +154,13 @@ export class UserController {
     status: 200,
     description: 'Пользователи найдены',
   })
-  @Get(':name')
-  async getUsers(@Param('name') name: string): Promise<UserinfoDto[]> {
-    throw new NotImplementedException();
+  @Get('/search/:name')
+  @UseGuards(new AuthGuard())
+  async getUsers(
+    @Param('name') name: string,
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+  ): Promise<UserInfoDto[]> {
+    return await this.userService.getUsersByName(name, limit, offset);
   }
 }
